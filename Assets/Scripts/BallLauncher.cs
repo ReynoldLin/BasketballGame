@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,6 +7,7 @@ public class BallLauncher : MonoBehaviour
     public Rigidbody ball;
     public float launchForce = 10f;
     public float upwardForce = 5f;
+    public Dribbling dribbling;
 
     private InputSystem_Actions inputActions;
 
@@ -17,18 +19,18 @@ public class BallLauncher : MonoBehaviour
     void OnEnable()
     {
         inputActions.Player.Enable();
-        inputActions.Player.Attack.performed += OnAttack;
-        inputActions.Player.Jump.performed += OnReset;
+        inputActions.Player.Shoot.performed += OnShoot;
+        inputActions.Player.Reset.performed += OnReset;
     }
 
     void OnDisable()
     {
-        inputActions.Player.Attack.performed -= OnAttack;
-        inputActions.Player.Jump.performed -= OnReset;
+        inputActions.Player.Shoot.performed -= OnShoot;
+        inputActions.Player.Reset.performed -= OnReset;
         inputActions.Player.Disable();
     }
 
-    private void OnAttack(InputAction.CallbackContext context)
+    private void OnShoot(InputAction.CallbackContext context)
     {
         LaunchBall();
     }
@@ -40,6 +42,12 @@ public class BallLauncher : MonoBehaviour
 
     void LaunchBall()
     {
+        if (dribbling != null && dribbling.isDribbling)
+        {
+            dribbling.StopDribble();
+        }
+        
+        dribbling.ReleaseBall();
         Vector3 force = transform.forward * launchForce + Vector3.up * upwardForce;
         ball.AddForce(force, ForceMode.Impulse);
     }
