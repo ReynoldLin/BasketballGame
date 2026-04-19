@@ -18,17 +18,24 @@ public class BallLauncher : MonoBehaviour
     {
         inputActions.Player.Enable();
         inputActions.Player.Attack.performed += OnAttack;
+        inputActions.Player.Jump.performed += OnReset;
     }
 
     void OnDisable()
     {
         inputActions.Player.Attack.performed -= OnAttack;
+        inputActions.Player.Jump.performed -= OnReset;
         inputActions.Player.Disable();
     }
 
     private void OnAttack(InputAction.CallbackContext context)
     {
         LaunchBall();
+    }
+
+    private void OnReset(InputAction.CallbackContext context)
+    {
+        SceneReloader.Instance.ReloadCurrentScene();
     }
 
     void LaunchBall()
