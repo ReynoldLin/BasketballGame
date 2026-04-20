@@ -8,6 +8,7 @@ public class BallLauncher : MonoBehaviour
     public float launchForce = 10f;
     public float upwardForce = 5f;
     public Dribbling dribbling;
+    public Transform rim;
 
     private InputSystem_Actions inputActions;
 
@@ -48,7 +49,9 @@ public class BallLauncher : MonoBehaviour
         }
         
         dribbling.ReleaseBall();
-        Vector3 force = transform.forward * launchForce + Vector3.up * upwardForce;
+        
+        Vector3 directionToRim = (rim.position - ball.position).normalized;
+        Vector3 force = directionToRim * launchForce + Vector3.up * upwardForce;
         ball.AddForce(force, ForceMode.Impulse);
     }
 }

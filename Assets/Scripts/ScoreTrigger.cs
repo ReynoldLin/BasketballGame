@@ -7,6 +7,8 @@ public class ScoreTrigger : MonoBehaviour
     
     private int score = 0;
     private bool passedTop = false;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip scoreSound;
 
     public void BallPassedTop()
     {
@@ -23,8 +25,17 @@ public class ScoreTrigger : MonoBehaviour
 
     private void AddScore()
     {
+        PlayScoreSound();
         score += 2;
         scoreText.text = "Score: " + score;
         Debug.Log("Score: " + score);
+    }
+
+    private void PlayScoreSound()
+    {
+        if (audioSource != null && scoreSound != null)
+        {
+            audioSource.PlayOneShot(scoreSound);
+        }
     }
 }
