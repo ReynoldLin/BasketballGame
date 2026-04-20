@@ -900,11 +900,11 @@ Transform:
   m_GameObject: {fileID: 940734044}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.36721, y: 4.3, z: -1.6300001}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: 0.5, y: 0.120000005, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.25, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1777397120}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &940734049
 MonoBehaviour:
@@ -921,6 +921,7 @@ MonoBehaviour:
   ball: {fileID: 940734050}
   launchForce: 6.5
   upwardForce: 10
+  dribbling: {fileID: 1777397123}
 --- !u!54 &940734050
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -945,8 +946,8 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
+  m_Interpolate: 1
+  m_Constraints: 112
   m_CollisionDetection: 1
 --- !u!1 &1017663717
 GameObject:
@@ -1266,6 +1267,7 @@ GameObject:
   - component: {fileID: 1777397117}
   - component: {fileID: 1777397122}
   - component: {fileID: 1777397121}
+  - component: {fileID: 1777397123}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1366,6 +1368,7 @@ Transform:
   m_LocalScale: {x: 1, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 940734048}
   - {fileID: 330585546}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1382,7 +1385,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   moveSpeed: 5
-  dribbling: {fileID: 0}
+  dribbling: {fileID: 1777397123}
 --- !u!54 &1777397122
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1410,6 +1413,23 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &1777397123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1777397116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2da5b058ede2ff5469d526dbca09897e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Dribbling
+  ballRB: {fileID: 940734050}
+  playerRB: {fileID: 1777397122}
+  dribbleForce: 8
+  isDribbling: 0
+  heightThreshold: 0
 --- !u!1 &2103134815
 GameObject:
   m_ObjectHideFlags: 0
@@ -1558,5 +1578,4 @@ SceneRoots:
   - {fileID: 330618002}
   - {fileID: 1103515361}
   - {fileID: 737273034}
-  - {fileID: 940734048}
   - {fileID: 1777397120}

@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
         inputActions.Player.Move.canceled += OnMoveCancelled;
         
         inputActions.Player.Dribble.performed += OnDribbleStart;
-        inputActions.Player.Dribble.canceled += OnDribbleStop;
+        // inputActions.Player.Dribble.canceled += OnDribbleStop;
     }
 
     void OnDisable()
@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
         inputActions.Player.Move.canceled -= OnMoveCancelled;
         
         inputActions.Player.Dribble.performed -= OnDribbleStart;
-        inputActions.Player.Dribble.canceled -= OnDribbleStop;
+        // inputActions.Player.Dribble.canceled -= OnDribbleStop;
         inputActions.Player.Disable();
     }
 
@@ -51,15 +51,15 @@ public class PlayerMovement : MonoBehaviour
         dribbling.StartDribble();
     }
 
-    private void OnDribbleStop(InputAction.CallbackContext context)
-    {
-        dribbling.StopDribble();
-    }
+    // private void OnDribbleStop(InputAction.CallbackContext context)
+    // {
+    //     Debug.Log("Stop dribbling");
+    //     dribbling.StopDribble();
+    // }
 
     void FixedUpdate()
     {
         Move();
-        UpdateDribbleSpeed();
     }
 
     void Move()
@@ -67,15 +67,5 @@ public class PlayerMovement : MonoBehaviour
         Vector3 moveDirection = new Vector3(moveInput.x, 0f, moveInput.y);
         Vector3 velocity = moveDirection * moveSpeed;
         rb.linearVelocity = new Vector3(velocity.x, rb.linearVelocity.y, velocity.z);
-    }
-    
-    void UpdateDribbleSpeed()
-    {
-        // dribble faster when moving
-        if (dribbling != null)
-        {
-            float speed = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z).magnitude;
-            dribbling.dribbleSpeedMultiplier = Mathf.Lerp(1f, 1.5f, speed / moveSpeed);
-        }
     }
 }

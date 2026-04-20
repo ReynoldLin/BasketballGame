@@ -3,16 +3,24 @@ using UnityEngine;
 public class Dribbling : MonoBehaviour
 {
     [Header("Ball Settings")] 
-    public Rigidbody ballRigidbody;
-    public Transform handPosition;
+    public Rigidbody ballRB;
+    public Rigidbody playerRB;
     public float dribbleForce = 8f;
-    public float holdHeight = 0.8f;
+
+    private Vector3 ballOffset;
     
     [Header("Dribble Settings")]
-    public float dribbleSpeedMultiplier = 1f;
     public bool isDribbling = false;
+    public float heightThreshold = 5f;
     
     private bool ballInHand = true;
+    private float startingY;
+
+    void Start()
+    {
+        startingY = ballRB.position.y;
+        ballOffset = ballRB.position - playerRB.position;
+    }
     
     void Update()
     {
@@ -20,13 +28,14 @@ public class Dribbling : MonoBehaviour
         {
             HoldBall();
         }
-    }
-    
-    void FixedUpdate()
-    {
-        if (isDribbling && !ballInHand)
+
+        if (isDribbling)
         {
-            ApplyDribbleForce();
+            KeepBallToPlayer();
+            if (ballRB.position.y >= startingY - heightThreshold && ballRB.linearVelocity.y > 0)
+            {
+                ApplyDribbleForce();
+            }
         }
     }
     
@@ -36,8 +45,7 @@ public class Dribbling : MonoBehaviour
         {
             isDribbling = true;
             ReleaseBall();
-            ballRigidbody.linearVelocity = Vector3.zero;
-            ballRigidbody.AddForce(Vector3.down * dribbleForce, ForceMode.Impulse);
+            ApplyDribbleForce();
         }
     }
     
@@ -45,41 +53,30 @@ public class Dribbling : MonoBehaviour
     {
         isDribbling = false;
         ballInHand = true;
-        ballRigidbody.linearVelocity = Vector3.zero;
-        ballRigidbody.isKinematic = false;
+        ballRB.linearVelocity = Vector3.zero;
+        ballRB.isKinematic = false;
+    }
+
+    private void ApplyDribbleForce()
+    {
+        ballRB.linearVelocity = Vector3.zero;
+        ballRB.AddForce(Vector3.down * dribbleForce, ForceMode.Impulse);
+    }
+
+    private void KeepBallToPlayer()
+    {
+        Vector3 targetPosition = playerRB.position + ballOffset;
+        ballRB.MovePosition(new Vector3(targetPosition.x, ballRB.position.y, targetPosition.z));
     }
     
     public void ReleaseBall()
     {
-        ballRigidbody.isKinematic = false;
+        ballRB.isKinematic = false;
         ballInHand = false;
     }
     
     private void HoldBall()
     {
-        ballRigidbody.isKinematic = true;
-        ballRigidbody.transform.position = handPosition.position;
-    }
-    
-    private void ApplyDribbleForce()
-    {
-        float ballHeight = ballRigidbody.transform.position.y;
-        
-        if (ballHeight >= holdHeight)
-        {
-            ballRigidbody.isKinematic = false;
-            float force = dribbleForce * dribbleSpeedMultiplier;
-            ballRigidbody.AddForce(Vector3.down * force, ForceMode.Impulse);
-        }
-    }
-    
-    private void OnTriggerEnter(Collider other)
-    {
-        // catch the ball when it bounces back up to hand height
-        if (isDribbling && other.attachedRigidbody == ballRigidbody)
-        {
-            ballRigidbody.linearVelocity = Vector3.zero;
-            ballRigidbody.AddForce(Vector3.down * dribbleForce, ForceMode.Impulse);
-        }
+        ballRB.isKinematic = true;
     }
 }
