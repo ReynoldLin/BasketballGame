@@ -128,7 +128,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 313250703}
-  - component: {fileID: 313250705}
+  - component: {fileID: 313250707}
   - component: {fileID: 313250706}
   m_Layer: 0
   m_Name: TopTrigger
@@ -146,14 +146,27 @@ Transform:
   m_GameObject: {fileID: 313250702}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071066, y: -0, z: -0, w: 0.707107}
-  m_LocalPosition: {x: 0, y: 0.095, z: -0.694}
-  m_LocalScale: {x: 1.5, y: 1.25, z: 1.25}
+  m_LocalPosition: {x: 0, y: -0.55, z: -0.7}
+  m_LocalScale: {x: 1.25, y: 1.25, z: 0.25}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1103515361}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!135 &313250705
-SphereCollider:
+--- !u!114 &313250706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 313250702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb81e3cc5af672c4c8e88a6963eb6309, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TopScoreTrigger
+  scoreTrigger: {fileID: 899043226}
+--- !u!65 &313250707
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -171,21 +184,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &313250706
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 313250702}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb81e3cc5af672c4c8e88a6963eb6309, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TopScoreTrigger
-  scoreTrigger: {fileID: 899043226}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -806,7 +806,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 899043225}
-  - component: {fileID: 899043227}
+  - component: {fileID: 899043229}
   - component: {fileID: 899043226}
   - component: {fileID: 899043228}
   m_Layer: 0
@@ -825,8 +825,8 @@ Transform:
   m_GameObject: {fileID: 899043224}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071066, y: -0, z: -0, w: 0.707107}
-  m_LocalPosition: {x: 0, y: -1.414, z: -0.694}
-  m_LocalScale: {x: 1.5, y: 1.25, z: 1.25}
+  m_LocalPosition: {x: 0, y: -1, z: -0.7}
+  m_LocalScale: {x: 1.25, y: 1.25, z: 0.25}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1103515361}
@@ -846,27 +846,6 @@ MonoBehaviour:
   scoreText: {fileID: 2103134817}
   audioSource: {fileID: 899043228}
   scoreSound: {fileID: 8300000, guid: 104dbcbad78979549a5bfc1924b5531c, type: 3}
---- !u!135 &899043227
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 899043224}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!82 &899043228
 AudioSource:
   m_ObjectHideFlags: 0
@@ -964,6 +943,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!65 &899043229
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899043224}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &940734044
 GameObject:
   m_ObjectHideFlags: 0
