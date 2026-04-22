@@ -28,7 +28,6 @@ public class ScoreTrigger : MonoBehaviour
         PlayScoreSound();
         score += 2;
         scoreText.text = "Score: " + score;
-        Debug.Log("Score: " + score);
     }
 
     private void PlayScoreSound()
