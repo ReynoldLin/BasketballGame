@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,10 +7,13 @@ public class Shooting : MonoBehaviour
     public Rigidbody ball;
     public Dribbling dribbling;
     public Transform rim;
+    public Transform shootingPocket;
     public ShotMeter shotMeter;
 
     [Header("Shooting Settings")] 
     [SerializeField] private float shootingAngle = 55f;
+    [SerializeField] private float pocketLerpSpeed = 18f;
+    [SerializeField] private float pocketArrivalThreshold = 0.04f;
     
     [Header("Timing Window")]
     [SerializeField] private float timingWindowDuration = 1f;
@@ -41,29 +45,6 @@ public class Shooting : MonoBehaviour
         _inputActions.Player.Disable();
     }
 
-    private void OnShootStarted(InputAction.CallbackContext context)
-    {
-        if (!windowOpen)
-        {
-            OpenTimingWindow();
-        }
-        
-    }
-
-    private void OnShootReleased(InputAction.CallbackContext context)
-    {
-        if (windowOpen)
-        {
-            Shoot();
-            windowOpen = false;
-        }
-    }
-
-    private void OnReset(InputAction.CallbackContext context)
-    {
-        SceneReloader.Instance.ReloadCurrentScene();
-    }
-
     void OpenTimingWindow()
     {
         timingWindowStart = Time.time;
@@ -73,22 +54,23 @@ public class Shooting : MonoBehaviour
 
     void Update()
     {
+        if (windowOpen)
+        {
+            ball.MovePosition(new Vector3(shootingPocket.position.x, shootingPocket.position.y, shootingPocket.position.z));
+        }
+        
         if (windowOpen && Time.time - timingWindowStart > timingWindowDuration)
         {
             windowOpen = false;
-            Debug.Log("Shooting window closed");
         }
     }
 
     void Shoot()
     {
         shotMeter.StopBar();
-        if (dribbling != null && dribbling.isDribbling)
-        {
-            dribbling.StopDribble();
-        }
-        
-        dribbling.ReleaseBall();
+        ball.isKinematic = false;
+        ball.linearVelocity = Vector3.zero;
+        ball.angularVelocity = Vector3.zero;
         
         Vector3 targetPos = CalculateTargetFromTiming();
         
@@ -97,6 +79,48 @@ public class Shooting : MonoBehaviour
         
         Vector3 launchVelocity = CalculateShootingVelocity(ball.position, targetPos, shootingAngle);
         ball.AddForce(launchVelocity, ForceMode.VelocityChange);
+    }
+    
+    private void OnShootStarted(InputAction.CallbackContext context)
+    {
+        if (!windowOpen)
+        {
+            StartCoroutine(LerpToPocket());
+        }
+    }
+
+    private void OnShootReleased(InputAction.CallbackContext context)
+    {
+        if (windowOpen)
+        {
+            Shoot();
+            windowOpen = false;
+            ball.isKinematic = false;
+        }
+    }
+
+    private void OnReset(InputAction.CallbackContext context)
+    {
+        SceneReloader.Instance.ReloadCurrentScene();
+    }
+
+    private IEnumerator LerpToPocket()
+    {
+        ball.isKinematic = true;
+        
+        if (dribbling != null && dribbling.isDribbling)
+            dribbling.StopDribble();
+        dribbling.ReleaseBall();
+        
+        while (Mathf.Abs(ball.position.y - shootingPocket.position.y) > pocketArrivalThreshold)
+        {
+            float targetY = Mathf.Lerp(ball.position.y, shootingPocket.position.y, pocketLerpSpeed * Time.deltaTime);
+            ball.MovePosition(new Vector3(shootingPocket.position.x, targetY, shootingPocket.position.z));
+            yield return null;
+        }
+        
+        ball.position = shootingPocket.position;
+        OpenTimingWindow();
     }
 
     Vector3 CalculateShootingVelocity(Vector3 origin, Vector3 target, float angleDeg)

@@ -5,13 +5,13 @@ public class Dribbling : MonoBehaviour
     [Header("Ball Settings")] 
     public Rigidbody ballRB;
     public Rigidbody playerRB;
-    public float dribbleForce = 8f;
+    public float dribbleForce = 6f;
 
     private Vector3 ballOffset;
     
     [Header("Dribble Settings")]
     public bool isDribbling = false;
-    public float heightThreshold = 5f;
+    public float heightThreshold = 2f;
     
     private bool ballInHand = true;
     private float startingY;
@@ -53,8 +53,8 @@ public class Dribbling : MonoBehaviour
     {
         isDribbling = false;
         ballInHand = true;
-        ballRB.linearVelocity = Vector3.zero;
         ballRB.isKinematic = false;
+        ballRB.linearVelocity = Vector3.zero;
     }
 
     private void ApplyDribbleForce()
