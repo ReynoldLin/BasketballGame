@@ -12,13 +12,13 @@ public class ShotMeter : MonoBehaviour
     public float timingWindowDuration = 1f;
     public float perfectWindowSize = 0.2f;
 
-    private float barWidth;
+    private float barHeight;
     private bool running = false;
     private float startTime;
 
     void Start()
     {
-        barWidth = barBackground.rect.width;
+        barHeight = barBackground.rect.height;
         UpdateZoneVisuals();
         Hide();
     }
@@ -55,17 +55,17 @@ public class ShotMeter : MonoBehaviour
 
     void SetIndicatorPosition(float t)
     {
-        float x = Mathf.Lerp(-barWidth / 2f, barWidth / 2f, t);
-        indicator.anchoredPosition = new Vector2(x, 0);
+        float y = Mathf.Lerp(-barHeight / 2f, barHeight / 2f, t);
+        indicator.anchoredPosition = new Vector2(0, y);
     }
 
     void UpdateZoneVisuals()
     {
         float perfectStart = 0.5f - perfectWindowSize / 2f;
-        float zoneWidth = perfectWindowSize * barWidth;
-        float zoneX = Mathf.Lerp(-barWidth / 2f, barWidth / 2f, perfectStart) + zoneWidth / 2f;
+        float zoneHeight = perfectWindowSize * barHeight;
+        float zoneY = Mathf.Lerp(-barHeight / 2f, barHeight / 2f, perfectStart) + zoneHeight / 2f;
 
-        perfectZone.sizeDelta = new Vector2(zoneWidth, perfectZone.sizeDelta.y);
-        perfectZone.anchoredPosition = new Vector2(zoneX, 0);
+        perfectZone.sizeDelta = new Vector2(perfectZone.sizeDelta.x, zoneHeight);
+        perfectZone.anchoredPosition = new Vector2(0, zoneY);
     }
 }
