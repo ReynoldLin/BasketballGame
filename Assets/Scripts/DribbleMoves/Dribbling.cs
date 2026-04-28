@@ -5,21 +5,22 @@ public class Dribbling : MonoBehaviour
     [Header("Ball Settings")] 
     public Rigidbody ballRB;
     public Rigidbody playerRB;
-    public float dribbleForce = 6f;
-
-    private Vector3 ballOffset;
+    [SerializeField] private float dribbleForce = 6f;
     
     [Header("Dribble Settings")]
     public bool isDribbling = false;
-    public float heightThreshold = 2f;
-    
+    [SerializeField] private float heightThreshold = 2f;
+
+    private Crossover crossover;
     private bool ballInHand = true;
     private float startingY;
+    public Vector3 ballOffset;
 
     void Start()
     {
         startingY = ballRB.position.y;
         ballOffset = ballRB.position - playerRB.position;
+        crossover = GetComponent<Crossover>();
     }
     
     void Update()
@@ -57,16 +58,24 @@ public class Dribbling : MonoBehaviour
         ballRB.linearVelocity = Vector3.zero;
     }
 
-    private void ApplyDribbleForce()
+    public void ApplyDribbleForce()
     {
         ballRB.linearVelocity = Vector3.zero;
         ballRB.AddForce(Vector3.down * dribbleForce, ForceMode.Impulse);
     }
 
-    private void KeepBallToPlayer()
+    public void KeepBallToPlayer()
     {
+        if (crossover != null && crossover.isCrossingOver) return;
+        
         Vector3 targetPosition = playerRB.position + ballOffset;
         ballRB.MovePosition(new Vector3(targetPosition.x, ballRB.position.y, targetPosition.z));
+    }
+    
+    public void ResumeKeepBallToPlayer()
+    {
+        ballOffset = ballRB.position - playerRB.position;
+        KeepBallToPlayer();
     }
     
     public void ReleaseBall()

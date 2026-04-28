@@ -15,6 +15,11 @@ public class PlayerMovement : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _inputActions = new InputSystem_Actions();
     }
+
+    void Start()
+    {
+        dribbling.StartDribble();
+    }
     
     void OnEnable()
     {
@@ -22,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
         _inputActions.Player.Move.performed += OnMove;
         _inputActions.Player.Move.canceled += OnMoveCancelled;
         
-        _inputActions.Player.Dribble.performed += OnDribbleStart;
+        // _inputActions.Player.Dribble.performed += OnDribbleStart;
         // _inputActions.Player.Dribble.canceled += OnDribbleStop;
     }
 
@@ -31,7 +36,7 @@ public class PlayerMovement : MonoBehaviour
         _inputActions.Player.Move.performed -= OnMove;
         _inputActions.Player.Move.canceled -= OnMoveCancelled;
         
-        _inputActions.Player.Dribble.performed -= OnDribbleStart;
+        // _inputActions.Player.Dribble.performed -= OnDribbleStart;
         // _inputActions.Player.Dribble.canceled -= OnDribbleStop;
         _inputActions.Player.Disable();
     }
@@ -46,10 +51,10 @@ public class PlayerMovement : MonoBehaviour
         _moveInput = Vector2.zero;
     }
     
-    private void OnDribbleStart(InputAction.CallbackContext context)
-    {
-        dribbling.StartDribble();
-    }
+    // private void OnDribbleStart(InputAction.CallbackContext context)
+    // {
+    //     dribbling.StartDribble();
+    // }
 
     // private void OnDribbleStop(InputAction.CallbackContext context)
     // {
